@@ -68,10 +68,15 @@ export function useResolveWeb3Name(address?: string, ens?: string):string {
               setWeb3Name(web3NameFromIndexDb?.body);
             } else {
               try {
+                // attempt ENS resolution first
                 let web3Response = await getEnsName(provider, checksumWallet);
+
+                // attempt Unstoppable Domains resolution second
                 if (!web3Response) {
                   web3Response = await getUnstoppableName(provider, checksumWallet);
                 }
+
+                // store result
                 if (web3Response) {
                   setWeb3Name(web3Response);
                 }
